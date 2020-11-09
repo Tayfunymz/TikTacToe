@@ -51,11 +51,14 @@ public class Main {
             computerMove('x');
             String checkWinner = checkWinner();
             if (checkWinner!= null) {
-                System.out.println("\n" + checkWinner + " is the Winner!");
                 if (checkWinner == "x") {
+                    System.out.println("Computer is the winner!");
                     COMPUTER_SCORE += 1;
-                } else {
+                } else if (checkWinner == "o") {
+                    System.out.println("Player is the winner!");
                     PLAYER_SCORE += 1;
+                } else if (checkWinner == "draw") {
+                    System.out.println("Game is draw");
                 }
                 break;
             }
@@ -69,10 +72,13 @@ public class Main {
             playerMove('x');
             String checkWinner = checkWinner();
             if (checkWinner != null) {
-                System.out.println("\n" + checkWinner + " is the Winner!");
-                if (checkWinner == "x") {
+                if (checkWinner == "draw") {
+                    System.out.println("Game is draw");
+                } else if (checkWinner == "x") {
+                    System.out.println("Player is the winner!");
                     PLAYER_SCORE += 1;
-                } else {
+                } else if (checkWinner == "o") {
+                    System.out.println("Computer is the winner!");
                     COMPUTER_SCORE += 1;
                 }
                 break;
@@ -149,7 +155,12 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        playGame();
-        printWinner();
+        String keepPlaying = null;
+        do {
+            playGame();
+            printWinner();
+            System.out.println("Keep playing?");
+            keepPlaying = scan.next();
+        } while (keepPlaying.equalsIgnoreCase("yes"));
     }
 }

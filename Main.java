@@ -3,7 +3,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
-    private static final char[] theBoard = new char[10];
+    private static final char[] theBoard = new char[9];
     private static final Random rand = new Random();
     private static final Scanner scan = new Scanner(System.in);
     private static int COMPUTER_SCORE = 0;
@@ -47,44 +47,45 @@ public class Main {
 
     private static void computerStarts() {
         System.out.println("\nCOMPUTER GETS TO GO FIRST! ");
-        while (true) {
+        while (checkWinner() == null) {
             computerMove('x');
-            String checkWinner = checkWinner();
-            if (checkWinner!= null) {
-                if (checkWinner == "x") {
-                    System.out.println("Computer is the winner!");
-                    COMPUTER_SCORE += 1;
-                } else if (checkWinner == "o") {
-                    System.out.println("Player is the winner!");
-                    PLAYER_SCORE += 1;
-                } else if (checkWinner == "draw") {
-                    System.out.println("Game is draw");
-                }
+            if (checkWinner() != null) {
                 break;
             }
             playerMove('o');
         }
+        String checkWinner = checkWinner();
+        if (checkWinner == "o") {
+            System.out.println("Player is the winner");
+            PLAYER_SCORE += 1;
+        } else if (checkWinner == "x") {
+            System.out.println("Computer is the winner");
+            COMPUTER_SCORE += 1;
+        } else if (checkWinner == "draw"){
+            System.out.println("Its a draw");
+        }
+
     }
 
     private static void playerStarts() {
         System.out.println("\nPLAYER GETS TO GO FIRST. MOVE(0/8)");
-        while (true) {
-            playerMove('x');
-            String checkWinner = checkWinner();
-            if (checkWinner != null) {
-                if (checkWinner == "draw") {
-                    System.out.println("Game is draw");
-                } else if (checkWinner == "x") {
-                    System.out.println("Player is the winner!");
-                    PLAYER_SCORE += 1;
-                } else if (checkWinner == "o") {
-                    System.out.println("Computer is the winner!");
-                    COMPUTER_SCORE += 1;
-                }
-                break;
-            }
-            computerMove('o');
+        while (checkWinner() == null) {
+         playerMove('x');
+         if (checkWinner() != null) {
+             break;
+         }
+         computerMove('o');
 
+        }
+        String checkWinner = checkWinner();
+        if (checkWinner == "x") {
+            System.out.println("Player is the winner");
+            PLAYER_SCORE += 1;
+        } else if (checkWinner == "o") {
+            System.out.println("Computer is the winner");
+            COMPUTER_SCORE += 1;
+        } else if (checkWinner == "draw"){
+            System.out.println("Its a draw");
         }
     }
 
@@ -99,9 +100,9 @@ public class Main {
     }
 
     private static void computerMove(char computerChar) {
-        int move = rand.nextInt(10);
+        int move = rand.nextInt(9);
         while (theBoard[move] != ' ') {
-            move = rand.nextInt(10);
+            move = rand.nextInt(9);
         }
         theBoard[move] = computerChar;
         updateBoard(theBoard);
@@ -153,13 +154,22 @@ public class Main {
         }
         return null;
     }
+    private static void restartGame() {
+        initializeBoard();
+        PLAYER_SCORE = 0;
+        COMPUTER_SCORE = 0;
+    }
 
     public static void main(String[] args) {
         String keepPlaying = null;
         do {
             playGame();
             printWinner();
-            System.out.println("Keep playing?");
+            System.out.println("Type \"yes\" to continue\nType \"no\" exit the game\nType \"restart\" to reset the score.");
+            String restart = scan.next();
+            if (restart.equalsIgnoreCase("restart")) {
+                restartGame();
+            }
             keepPlaying = scan.next();
         } while (keepPlaying.equalsIgnoreCase("yes"));
     }

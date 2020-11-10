@@ -166,11 +166,10 @@ public class Main {
             playGame();
             printWinner();
             System.out.println("Type \"yes\" to continue\nType \"no\" exit the game\nType \"restart\" to reset the score.");
-            String restart = scan.next();
-            if (restart.equalsIgnoreCase("restart")) {
+            keepPlaying = scan.next();
+            if (keepPlaying.equalsIgnoreCase("restart")) {
                 restartGame();
             }
-            keepPlaying = scan.next();
-        } while (keepPlaying.equalsIgnoreCase("yes"));
+        } while (keepPlaying.equalsIgnoreCase("yes") || keepPlaying.equalsIgnoreCase("restart"));
     }
 }
